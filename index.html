@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0F2A66">
+<title>Renfo marathon</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316337A'/%3E%3Cpath d='M12 44 L46 37' stroke='white' stroke-width='7' stroke-linecap='round'/%3E%3Ccircle cx='51' cy='33' r='6' fill='white'/%3E%3Cpath d='M44 37 L44 48' stroke='%23FF8A3D' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&display=swap">
+<style>
+:root {
+  --piste: #16337A;
+  --piste-deep: #0F2A66;
+  --paint: #FFFFFF;
+  --mist: #C5D3F2;
+  --signal: #FF8A3D;
+  --navy: #10255A;
+  --lane-line: rgba(255, 255, 255, 0.72);
+  --display: "Big Shoulders Display", "Big Shoulders", "Arial Narrow", sans-serif;
+  --text: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 60px; }
+body { margin: 0; background: var(--piste); color: var(--paint); font: 400 17px/1.55 var(--text); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; border-radius: 4px; }
+
+.hero { max-width: 600px; margin: 0 auto; padding: 30px 20px 24px; }
+.hero h1 { font: 800 66px/0.88 var(--display); margin: 0 0 16px; }
+.lead { font-size: 18px; line-height: 1.45; margin: 0 0 20px; max-width: 32ch; }
+.levels { margin: 0; display: grid; gap: 4px; }
+.levels div { display: grid; grid-template-columns: 82px 1fr; align-items: baseline; }
+.levels dt { font: 700 22px/1.2 var(--display); }
+.levels dd { margin: 0; color: var(--mist); font-size: 15.5px; }
+.note { color: var(--mist); font-size: 15.5px; margin: 14px 0 0; }
+
+.bar { position: sticky; top: 0; z-index: 5; background: var(--piste-deep); border-bottom: 3px solid var(--lane-line); }
+.bar-inner { max-width: 600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 12px; }
+.sections a { display: inline-block; font-weight: 700; font-size: 15.5px; text-decoration: none; padding: 13px 8px; }
+.picker { display: flex; align-items: center; gap: 2px; }
+.picker span { color: var(--mist); font-size: 14.5px; margin-right: 6px; }
+.picker button { font: 800 21px/1 var(--display); color: var(--paint); background: transparent; border: 0; width: 42px; height: 42px; border-radius: 8px; cursor: pointer; }
+.picker button[aria-pressed="true"] { background: rgba(255, 255, 255, 0.16); box-shadow: inset 0 -3px 0 var(--signal); }
+
+main { max-width: 600px; margin: 0 auto; }
+.section-head { padding: 30px 20px 20px; }
+.section-head h2 { font: 800 48px/1 var(--display); margin: 0 0 8px; }
+.section-head p { margin: 0; color: var(--mist); font-size: 16px; max-width: 40ch; }
+
+.lane { border-top: 3px solid var(--lane-line); padding: 20px 20px 28px; }
+.lane-head { display: grid; grid-template-columns: 50px 1fr; gap: 12px; align-items: start; }
+.lane-no { font: 800 78px/0.78 var(--display); }
+.lane h3 { font: 700 33px/1 var(--display); margin: 2px 0 6px; }
+.why { margin: 0; color: var(--mist); font-size: 15.5px; line-height: 1.45; }
+.pose { margin: 16px -10px 4px; }
+.pose svg { display: block; width: 100%; height: auto; max-height: 290px; }
+.dose { display: flex; align-items: center; justify-content: space-between; gap: 10px 14px; flex-wrap: wrap; margin: 6px 0 16px; }
+.dose p { margin: 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.dose-value { font: 800 48px/1 var(--display); }
+.dose-detail { color: var(--mist); font-size: 16px; }
+.timer { position: relative; overflow: hidden; min-width: 170px; height: 48px; padding: 0 18px; border: 0; border-radius: 10px; background: var(--signal); color: var(--navy); font: 700 16px/1 var(--text); cursor: pointer; }
+.timer::after { content: ""; position: absolute; left: 0; bottom: 0; height: 5px; width: calc(var(--progress, 0) * 100%); background: var(--navy); opacity: 0.45; }
+.timer.running { background: var(--paint); }
+.timer-label { position: relative; font-variant-numeric: tabular-nums; }
+.steps { list-style: none; margin: 0 0 14px; padding: 0; counter-reset: step; }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 24px 1fr; gap: 8px; margin: 0 0 9px; }
+.steps li::before { content: counter(step); font: 800 23px/1.1 var(--display); color: var(--signal); }
+.avoid, .variant { margin: 0 0 12px; font-size: 16px; }
+.video { display: inline-flex; align-items: center; gap: 8px; color: var(--mist); font-size: 16px; padding: 8px 0; text-underline-offset: 3px; }
+.video svg { flex: none; }
+.lane.not-yet .pose, .lane.not-yet .steps, .lane.not-yet .avoid, .lane.not-yet .variant { opacity: 0.45; }
+.lane.not-yet .dose-value { font-size: 30px; }
+
+footer { max-width: 600px; margin: 0 auto; border-top: 3px solid var(--lane-line); padding: 26px 20px 48px; }
+footer h2 { font: 800 34px/1 var(--display); margin: 0 0 12px; }
+footer ul { margin: 0; padding-left: 20px; color: var(--mist); }
+footer li { margin: 0 0 8px; }
+
+@media (min-width: 640px) {
+  .hero h1 { font-size: 84px; }
+  .pose { margin-left: 0; margin-right: 0; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Renfo marathon</h1>
+  <p class="lead">Les 9 exercices de ta prépa : à quoi ils ressemblent, comment les faire et combien en faire à ton niveau.</p>
+  <dl class="levels">
+    <div><dt>Niveau 1</dt><dd>jusqu’au 13 décembre</dd></div>
+    <div><dt>Niveau 2</dt><dd>du 14 décembre au 17 janvier</dd></div>
+    <div><dt>Niveau 3</dt><dd>à partir du 18 janvier</dd></div>
+  </dl>
+  <p class="note">Le niveau du jour est déjà choisi, tu peux le changer dans la barre ci-dessous.</p>
+</header>
+
+<nav class="bar" aria-label="Sections et niveau">
+  <div class="bar-inner">
+    <div class="sections"><a href="#gainage">Gainage</a><a href="#jambes">Jambes</a></div>
+    <div class="picker" role="group" aria-label="Niveau">
+      <span aria-hidden="true">Niveau</span>
+      <button type="button" data-level="1" aria-pressed="false" aria-label="Niveau 1">1</button>
+      <button type="button" data-level="2" aria-pressed="false" aria-label="Niveau 2">2</button>
+      <button type="button" data-level="3" aria-pressed="false" aria-label="Niveau 3">3</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section id="gainage" aria-labelledby="gainage-title">
+    <div class="section-head">
+      <h2 id="gainage-title">Gainage</h2>
+      <p>Le jeudi, après le footing ou le soir. Enchaîne les 5 exercices, 15 s de pause entre chacun, puis refais un tour : <span data-total="≈ 8 min|≈ 11 min|≈ 13 min">≈ 11 min</span> en tout.</p>
+    </div>
+    
+<article class="lane" id="planche">
+  <div class="lane-head">
+    <span class="lane-no" aria-hidden="true">1</span>
+    <div>
+      <h3>Planche sur les coudes</h3>
+      <p class="why">Les abdos profonds tiennent ton bassin : ta posture reste droite jusqu’au bout du marathon.</p>
+    </div>
+  </div>
+  <figure class="pose"><svg viewBox="55.1 77.3 240.0 86.7" role="img" aria-label="Planche : appui sur les avant-bras et la pointe des pieds, corps aligné des talons à la tête" xmlns="http://www.w3.org/2000/svg"><rect x="65.1" y="148.0" width="220.0" height="6" rx="3" fill="#24479A"/><polyline points="98.9,144.1 97.1,131.2 134.8,126.2 174.5,120.9 226.0,114.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="226.0,114.0 233.9,112.9" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="226.0,114.0 226.0,144.0 253.0,144.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="243.3" cy="111.7" r="10.5" fill="#FFFFFF"/><polyline points="94.9,114.3 241.1,94.8" fill="none" stroke="#FF8A3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 8"/></svg></figure>
+  <div class="dose" data-dose='{&quot;1&quot;: [&quot;30 s&quot;, &quot;&quot;], &quot;2&quot;: [&quot;45 s&quot;, &quot;&quot;], &quot;3&quot;: [&quot;60 s&quot;, &quot;&quot;]}'>
+    <p><strong class="dose-value"></strong> <span class="dose-detail"></span></p>
+    <button class="timer" type="button" data-seconds='{"1": 30, "2": 45, "3": 60}'><span class="timer-label">Lancer le chrono</span></button>
+  </div>
+  <ol class="steps"><li>Avant-bras au sol, coudes sous les épaules.</li><li>Monte sur la pointe des pieds : ton corps forme une ligne droite des talons à la tête.</li><li>Serre abdos et fessiers, regarde le sol, respire normalement.</li></ol>
+  <p class="avoid"><strong>À éviter.</strong> Les fesses trop hautes, ou le bas du dos qui se creuse.</p>
+  <p class="variant"><strong>Plus facile :</strong> Genoux au sol.<br><strong>Plus dur :</strong> Décolle un pied quelques secondes, puis l’autre.</p>
+  <a class="video" href="https://www.youtube.com/results?search_query=planche+abdominale+sur+les+coudes+bonne+position" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 6.3 L13.8 10 L8.2 13.7 Z" fill="currentColor"/></svg>Voir des démos vidéo</a>
+</article>
+<article class="lane" id="planche-laterale">
+  <div class="lane-head">
+    <span class="lane-no" aria-hidden="true">2</span>
+    <div>
+      <h3>Planche latérale</h3>
+      <p class="why">Les obliques et le moyen fessier empêchent ton bassin de s’affaisser à chaque appui.</p>
+    </div>
+  </div>
+  <figure class="pose"><svg viewBox="50.9 38.0 240.0 126.2" role="img" aria-label="Planche latérale : appui sur un avant-bras et le bord des pieds, hanches hautes, bras du dessus vers le plafond" xmlns="http://www.w3.org/2000/svg"><rect x="60.9" y="148.0" width="220.0" height="6" rx="3" fill="#24479A"/><polyline points="96.2,144.2 94.5,131.3 132.2,126.3 171.8,121.0 223.4,114.1" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="223.4,114.1 231.3,113.1" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="244.0,144.0 226.0,144.0 223.4,114.1" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="223.4,114.1 228.6,84.6 233.3,58.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="240.7" cy="111.8" r="10.5" fill="#FFFFFF"/><polyline points="171.8,143.0 171.8,137.0" fill="none" stroke="#FF8A3D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><polygon points="171.8,130.0 177.8,140.0 165.8,140.0" fill="#FF8A3D"/></svg></figure>
+  <div class="dose" data-dose='{&quot;1&quot;: [&quot;25 s&quot;, &quot;par côté&quot;], &quot;2&quot;: [&quot;35 s&quot;, &quot;par côté&quot;], &quot;3&quot;: [&quot;40 s&quot;, &quot;par côté&quot;]}'>
+    <p><strong class="dose-value"></strong> <span class="dose-detail"></span></p>
+    <button class="timer" type="button" data-seconds='{"1": 25, "2": 35, "3": 40}'><span class="timer-label">Lancer le chrono</span></button>
+  </div>
+  <ol class="steps"><li>Allongé sur le côté, coude sous l’épaule, jambes tendues l’une sur l’autre.</li><li>Pousse dans le coude et le bord du pied pour décoller les hanches.</li><li>Corps bien droit, bras du dessus vers le plafond. Puis l’autre côté.</li></ol>
+  <p class="avoid"><strong>À éviter.</strong> Les hanches qui retombent ou qui partent en arrière.</p>
+  <p class="variant"><strong>Plus facile :</strong> Genou du dessous au sol.<br><strong>Plus dur :</strong> Lève la jambe du dessus de quelques centimètres.</p>
+  <a class="video" href="https://www.youtube.com/results?search_query=planche+lat%C3%A9rale+sur+le+coude" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 6.3 L13.8 10 L8.2 13.7 Z" fill="currentColor"/></svg>Voir des démos vidéo</a>
+</article>
+<article class="lane" id="dead-bug">
+  <div class="lane-head">
+    <span class="lane-no" aria-hidden="true">3</span>
+    <div>
+      <h3>Dead bug</h3>
+      <p class="why">Ton tronc reste immobile pendant que bras et jambes bougent, comme quand tu cours.</p>
+    </div>
+  </div>
+  <figure class="pose"><svg viewBox="62.9 66.4 240.0 107.6" role="img" aria-label="Dead bug : sur le dos, un bras et un genou levés, le bras et la jambe opposés descendent vers le sol" xmlns="http://www.w3.org/2000/svg"><rect x="72.9" y="158.0" width="220.0" height="6" rx="3" fill="#24479A"/><polyline points="170.0,154.0 170.0,114.0 132.0,114.0 127.5,102.9" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="222.0,154.0 222.0,124.0 222.0,97.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="170.0,154.0 130.4,148.4 92.8,143.1 90.7,131.3" fill="none" stroke="#FF8A3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="170.0,154.0 222.0,154.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="240.0" cy="147.5" r="10.5" fill="#FFFFFF"/><polyline points="222.0,154.0 248.0,139.0 271.4,125.5" fill="none" stroke="#FF8A3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M229.3,84.4 A70,70 0 0 1 272.6,105.6" fill="none" stroke="#FF8A3D" stroke-width="3.5" stroke-linecap="round"/><polygon points="277.2,110.9 266.3,106.7 275.7,99.3" fill="#FF8A3D"/><path d="M116.5,105.8 A72,72 0 0 0 103.0,127.5" fill="none" stroke="#FF8A3D" stroke-width="3.5" stroke-linecap="round"/><polygon points="100.8,134.2 97.8,122.9 109.3,126.2" fill="#FF8A3D"/></svg></figure>
+  <div class="dose" data-dose='{&quot;1&quot;: [&quot;6&quot;, &quot;par côté&quot;], &quot;2&quot;: [&quot;8&quot;, &quot;par côté, lentement&quot;], &quot;3&quot;: [&quot;10&quot;, &quot;par côté, lentement&quot;]}'>
+    <p><strong class="dose-value"></strong> <span class="dose-detail"></span></p>
+    
+  </div>
+  <ol class="steps"><li>Sur le dos, bras tendus vers le plafond, genoux pliés à 90° au-dessus des hanches.</li><li>Plaque le bas du dos contre le sol et garde-le collé.</li><li>Descends lentement un bras derrière la tête et la jambe opposée vers le sol, sans les poser.</li><li>Reviens au centre, puis l’autre côté.</li></ol>
+  <p class="avoid"><strong>À éviter.</strong> Le bas du dos qui décolle. Si ça arrive, descends moins bas.</p>
+  <p class="variant"><strong>Plus facile :</strong> Ne bouge que les jambes.<br><strong>Plus dur :</strong> Descends en 3 secondes.</p>
+  <a class="video" href="https://www.youtube.com/results?search_query=dead+bug+exercice+gainage" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 6.3 L13.8 10 L8.2 13.7 Z" fill="currentColor"/></svg>Voir des démos vidéo</a>
+</article>
+<article class="lane" id="pont-fessier">
+  <div class="lane-head">
+    <span class="lane-no" aria-hidden="true">4</span>
+    <div>
+      <h3>Pont fessier</h3>
+      <p class="why">Les fessiers sont le moteur de ta poussée à chaque foulée.</p>
+    </div>
+  </div>
+  <figure class="pose"><svg viewBox="64.0 79.6 240.0 96.4" role="img" aria-label="Pont fessier : sur le dos, pieds à plat, le bassin monte jusqu’à aligner genoux, hanches et épaules" xmlns="http://www.w3.org/2000/svg"><rect x="74.0" y="158.0" width="220.0" height="6" rx="3" fill="#24479A"/><g opacity="0.26"><polyline points="226.0,154.0 180.0,154.0 158.2,120.5 132.0,148.0 118.0,155.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></g><polyline points="226.0,154.0 197.0,155.0 170.0,156.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="226.0,154.0 180.6,130.6 145.0,112.3 132.0,148.0 118.0,155.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="243.5" cy="147.5" r="10.5" fill="#FFFFFF"/><polyline points="180.6,118.6 180.6,103.6" fill="none" stroke="#FF8A3D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><polygon points="180.6,96.6 186.6,106.6 174.6,106.6" fill="#FF8A3D"/></svg></figure>
+  <div class="dose" data-dose='{&quot;1&quot;: [&quot;12&quot;, &quot;sur 2 jambes&quot;], &quot;2&quot;: [&quot;10&quot;, &quot;par jambe, sur 1 jambe&quot;], &quot;3&quot;: [&quot;12&quot;, &quot;par jambe, sur 1 jambe, 2 s en haut&quot;]}'>
+    <p><strong class="dose-value"></strong> <span class="dose-detail"></span></p>
+    
+  </div>
+  <ol class="steps"><li>Sur le dos, genoux pliés, pieds à plat près des fesses, bras le long du corps.</li><li>Pousse dans les talons et monte le bassin jusqu’à aligner genoux, hanches et épaules.</li><li>Serre les fessiers en haut, redescends lentement.</li><li>Sur 1 jambe (niveaux 2 et 3) : tends l’autre jambe dans le prolongement de la cuisse, le bassin reste horizontal.</li></ol>
+  <p class="avoid"><strong>À éviter.</strong> Cambrer le bas du dos pour monter plus haut.</p>
+  <p class="variant"><strong>Plus facile :</strong> Sur 2 jambes, moins haut.<br><strong>Plus dur :</strong> Pieds posés sur une chaise.</p>
+  <a class="video" href="https://www.youtube.com/results?search_query=pont+fessier+une+jambe" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 6.3 L13.8 10 L8.2 13.7 Z" fill="currentColor"/></svg>Voir des démos vidéo</a>
+</article>
+<article class="lane" id="bird-dog">
+  <div class="lane-head">
+    <span class="lane-no" aria-hidden="true">5</span>
+    <div>
+      <h3>Bird dog</h3>
+      <p class="why">Il gaine le dos et coordonne bras et jambe opposés, comme ta foulée.</p>
+    </div>
+  </div>
+  <figure class="pose"><svg viewBox="32.1 52.0 240.0 122.0" role="img" aria-label="Bird dog : à quatre pattes, un bras tendu devant et la jambe opposée tendue derrière, à l’horizontale" xmlns="http://www.w3.org/2000/svg"><rect x="42.1" y="158.0" width="220.0" height="6" rx="3" fill="#24479A"/><polyline points="140.0,114.0 100.0,114.0 62.0,114.0 61.0,126.0" fill="none" stroke="#FF8A3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="90.7,149.9 102.0,154.0 140.0,154.0 140.0,114.0 192.0,97.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="192.0,97.0 192.0,127.0 192.0,154.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="192.0,97.0 199.8,98.7" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="209.1" cy="100.6" r="10.5" fill="#FFFFFF"/><polyline points="192.0,97.0 219.0,83.8 243.2,72.0" fill="none" stroke="#FF8A3D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></figure>
+  <div class="dose" data-dose='{&quot;1&quot;: [&quot;6&quot;, &quot;par côté&quot;], &quot;2&quot;: [&quot;8&quot;, &quot;par côté, 2 s tenues&quot;], &quot;3&quot;: [&quot;8&quot;, &quot;par côté, 2 s tenues&quot;]}'>
+    <p><strong class="dose-value"></strong> <span class="dose-detail"></span></p>
+    
+  </div>
+  <ol class="steps"><li>À 4 pattes, mains sous les épaules, genoux sous les hanches.</li><li>Tends en même temps un bras devant et la jambe opposée derrière, à l’horizontale.</li><li>Reviens, puis l’autre côté.</li></ol>
+  <p class="avoid"><strong>À éviter.</strong> Le bassin qui pivote ou le dos qui se creuse : imagine un verre d’eau posé sur tes reins.</p>
+  <p class="variant"><strong>Plus facile :</strong> Ne tends que la jambe.<br><strong>Plus dur :</strong> Entre deux répétitions, ramène coude et genou sous le ventre sans les poser.</p>
+  <a class="video" href="https://www.youtube.com/results?search_query=bird+dog+exercice+gainage" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 6.3 L13.8 10 L8.2 13.7 Z" fill="currentColor"/></svg>Voir des démos vidéo</a>
+</article>
+  </section>
+
+  <section id="jambes" aria-labelledby="jambes-title">
+    <div class="section-head">
+      <h2 id="jambes-title">Jambes</h2>
+      <p>Le mardi, après la séance. Une chaise, une marche et tes haltères quand le niveau le demande. 30 s de pause entre les exercices, 2 tours : <span data-total="≈ 12 min|≈ 15 min|≈ 15 min">≈ 15 min</span> en tout.</p>
+    </div>
+    
+<article class="lane" id="squat-bulgare">
+  <div class="lane-head">
+    <span class="lane-no" aria-hidden="true">1</span>
+    <div>
+      <h3>Squat bulgare</h3>
+      <p class="why">Quadriceps et fessiers sur une jambe : la force qui amortit chaque réception.</p>
+    </div>
+  </div>
+  <figure class="pose"><svg viewBox="31.2 8.2 240.0 195.8" role="img" aria-label="Squat bulgare : pied arrière posé sur une chaise, on descend tout droit jusqu’à la cuisse avant à l’horizontale" xmlns="http://www.w3.org/2000/svg"><line x1="31.2" y1="186" x2="271.2" y2="186" stroke="#9DB4E8" stroke-width="2.5" opacity="0.7"/><polyline points="58.0,147.0 114.0,147.0" fill="none" stroke="#9DB4E8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="60.0,147.0 60.0,98.0" fill="none" stroke="#9DB4E8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="63.0,147.0 63.0,186.0" fill="none" stroke="#9DB4E8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="110.0,147.0 110.0,186.0" fill="none" stroke="#9DB4E8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><g opacity="0.26"><polyline points="107.0,141.0 144.7,136.5 168.0,104.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="93.0,140.0 107.0,141.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="168.0,104.0 180.6,142.0 192.0,180.0 206.0,183.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="168.0,104.0 171.6,52.1" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171.6,52.1 172.2,44.1" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="172.8" cy="34.7" r="10.5" fill="#FFFFFF"/><polyline points="171.6,52.1 177.4,79.5 201.2,76.2" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></g><polyline points="107.0,141.0 134.6,167.1 159.2,135.6" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="93.0,140.0 107.0,141.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="159.2,135.6 198.6,142.6 192.0,180.0 206.0,183.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="159.2,135.6 164.6,83.9" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="164.6,83.9 165.5,76.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="166.5" cy="66.5" r="10.5" fill="#FFFFFF"/><polyline points="164.6,83.9 170.5,111.3 194.2,108.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="240.0,72.0 240.0,107.0" fill="none" stroke="#FF8A3D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><polygon points="240.0,114.0 234.0,104.0 246.0,104.0" fill="#FF8A3D"/></svg></figure>
+  <div class="dose" data-dose='{&quot;1&quot;: [&quot;8&quot;, &quot;par jambe, sans charge&quot;], &quot;2&quot;: [&quot;10&quot;, &quot;par jambe, descente en 3 s&quot;], &quot;3&quot;: [&quot;8&quot;, &quot;par jambe, 2 haltères de 7 kg&quot;]}'>
+    <p><strong class="dose-value"></strong> <span class="dose-detail"></span></p>
+    
+  </div>
+  <ol class="steps"><li>Dos à une chaise, pose le dessus du pied arrière sur l’assise.</li><li>Avance le pied avant assez loin pour qu’en bas ton genou reste au-dessus du pied.</li><li>Descends tout droit, genou arrière vers le sol, jusqu’à la cuisse avant à l’horizontale.</li><li>Remonte en poussant dans le talon avant. Toutes les répétitions d’une jambe, puis l’autre.</li></ol>
+  <p class="avoid"><strong>À éviter.</strong> Le genou avant qui rentre vers l’intérieur.</p>
+  <p class="variant"><strong>Plus facile :</strong> Fente arrière, sans chaise.<br><strong>Plus dur :</strong> Descente en 3 secondes avec les haltères.</p>
+  <a class="video" href="https://www.youtube.com/results?search_query=squat+bulgare+poids+du+corps+chaise" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 6.3 L13.8 10 L8.2 13.7 Z" fill="currentColor"/></svg>Voir des démos vidéo</a>
+</article>
+<article class="lane" id="souleve-de-terre">
+  <div class="lane-head">
+    <span class="lane-no" aria-hidden="true">2</span>
+    <div>
+      <h3>Soulevé de terre sur une jambe</h3>
+      <p class="why">Ischios, fessiers et équilibre de la cheville. Il protège les ischios, souvent touchés en marathon.</p>
+    </div>
+  </div>
+  <figure class="pose"><svg viewBox="38.7 11.1 240.0 181.9" role="img" aria-label="Soulevé de terre sur une jambe : le buste bascule vers l’avant pendant que la jambe libre part en arrière" xmlns="http://www.w3.org/2000/svg"><line x1="38.7" y1="176" x2="278.7" y2="176" stroke="#9DB4E8" stroke-width="2.5" opacity="0.7"/><polyline points="159.6,94.8 120.5,103.1 83.3,111.0 85.4,122.8" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="181.0,173.0 168.0,170.0 173.3,132.4 159.6,94.8 210.5,84.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="210.5,84.0 218.3,82.3" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="227.6" cy="80.3" r="10.5" fill="#FFFFFF"/><polyline points="210.5,84.0 209.4,114.0 209.4,141.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="200.4,143.0 218.4,143.0" fill="none" stroke="#9DB4E8" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M166.5,29.1 A66,66 0 0 1 216.7,61.7" fill="none" stroke="#FF8A3D" stroke-width="3.5" stroke-linecap="round"/><polygon points="219.9,67.9 210.4,61.2 221.3,56.4" fill="#FF8A3D"/><path d="M148.8,145.6 A52,52 0 0 1 115.4,122.1" fill="none" stroke="#FF8A3D" stroke-width="3.5" stroke-linecap="round"/><polygon points="112.1,115.9 121.7,122.6 110.7,127.5" fill="#FF8A3D"/></svg></figure>
+  <div class="dose" data-dose='{&quot;1&quot;: [&quot;8&quot;, &quot;par jambe, sans charge&quot;], &quot;2&quot;: [&quot;8&quot;, &quot;par jambe, 1 haltère dans la main opposée&quot;], &quot;3&quot;: [&quot;10&quot;, &quot;par jambe, 2 haltères&quot;]}'>
+    <p><strong class="dose-value"></strong> <span class="dose-detail"></span></p>
+    
+  </div>
+  <ol class="steps"><li>Debout sur une jambe, genou légèrement fléchi.</li><li>Bascule le buste vers l’avant en reculant la hanche : la jambe libre part en arrière dans le prolongement du dos.</li><li>Descends jusqu’à sentir l’arrière de la cuisse, buste presque à l’horizontale.</li><li>Remonte en serrant le fessier.</li></ol>
+  <p class="avoid"><strong>À éviter.</strong> Le dos rond, ou le bassin qui s’ouvre : le pied arrière pointe vers le sol.</p>
+  <p class="variant"><strong>Plus facile :</strong> Une main contre un mur pour l’équilibre.<br><strong>Plus dur :</strong> Un haltère dans chaque main.</p>
+  <a class="video" href="https://www.youtube.com/results?search_query=soulev%C3%A9+de+terre+une+jambe+halt%C3%A8re" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 6.3 L13.8 10 L8.2 13.7 Z" fill="currentColor"/></svg>Voir des démos vidéo</a>
+</article>
+<article class="lane" id="mollets">
+  <div class="lane-head">
+    <span class="lane-no" aria-hidden="true">3</span>
+    <div>
+      <h3>Mollets sur une marche</h3>
+      <p class="why">Mollets et tendon d’Achille encaissent le plus en marathon. Genou fléchi, tu cibles aussi le muscle profond, le soléaire.</p>
+    </div>
+  </div>
+  <figure class="pose"><svg viewBox="48.5 -4.0 240.0 242.0" role="img" aria-label="Mollets sur une marche : l’avant du pied sur le bord, le talon descend sous la marche puis monte sur la pointe" xmlns="http://www.w3.org/2000/svg"><line x1="48.5" y1="220" x2="288.5" y2="220" stroke="#9DB4E8" stroke-width="2.5" opacity="0.7"/><rect x="150" y="190" width="62" height="30" fill="#24479A" stroke="#9DB4E8" stroke-width="3"/><polyline points="212.0,190.0 212.0,14.0" fill="none" stroke="#9DB4E8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><g opacity="0.26"><polyline points="149.2,114.8 147.1,154.8 134.4,186.3" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="144.5,194.6 168.0,186.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="149.2,192.8 149.2,154.8 149.2,114.8 149.2,62.8" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="149.2,62.8 177.4,73.1 204.1,76.9" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="149.2,62.8 149.2,54.8" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="149.2" cy="45.3" r="10.5" fill="#FFFFFF"/></g><polyline points="153.9,93.9 151.8,133.8 139.0,165.3" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="150.3,168.3 168.0,186.0" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="153.9,171.9 153.9,133.9 153.9,93.9 153.9,41.9" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="153.9,41.9 182.0,52.1 208.8,55.9" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="153.9,41.9 153.9,33.9" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="153.9" cy="24.4" r="10.5" fill="#FFFFFF"/><polyline points="130.0,204.0 130.0,177.0" fill="none" stroke="#FF8A3D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><polygon points="130.0,170.0 136.0,180.0 124.0,180.0" fill="#FF8A3D"/></svg></figure>
+  <div class="dose" data-dose='{&quot;1&quot;: [&quot;12 + 12&quot;, &quot;par jambe, genou tendu puis fléchi&quot;], &quot;2&quot;: [&quot;12 + 12&quot;, &quot;par jambe, genou tendu puis fléchi&quot;], &quot;3&quot;: [&quot;12 + 12&quot;, &quot;par jambe, avec 1 haltère&quot;]}'>
+    <p><strong class="dose-value"></strong> <span class="dose-detail"></span></p>
+    
+  </div>
+  <ol class="steps"><li>Sur une marche, l’avant du pied sur le bord, talon dans le vide, une main au mur.</li><li>Sur une jambe, monte sur la pointe en 1 seconde.</li><li>Redescends en 3 secondes, talon sous le niveau de la marche.</li><li>Fais la série genou tendu, puis la même genou légèrement fléchi.</li></ol>
+  <p class="avoid"><strong>À éviter.</strong> Rebondir en bas ou aller vite : c’est la descente lente qui renforce le tendon.</p>
+  <p class="variant"><strong>Plus facile :</strong> Sur 2 pieds.<br><strong>Plus dur :</strong> Un haltère dans la main libre.</p>
+  <a class="video" href="https://www.youtube.com/results?search_query=mollets+sur+marche+excentrique+genou+fl%C3%A9chi" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 6.3 L13.8 10 L8.2 13.7 Z" fill="currentColor"/></svg>Voir des démos vidéo</a>
+</article>
+<article class="lane" id="pogos">
+  <div class="lane-head">
+    <span class="lane-no" aria-hidden="true">4</span>
+    <div>
+      <h3>Pogos</h3>
+      <p class="why">Des chevilles toniques renvoient l’énergie comme un ressort : chaque foulée te coûte moins.</p>
+    </div>
+  </div>
+  <figure class="pose"><svg viewBox="59.8 -23.9 240.0 217.9" role="img" aria-label="Pogos : petits sauts rapides sur l’avant du pied, jambes presque tendues" xmlns="http://www.w3.org/2000/svg"><line x1="59.8" y1="180" x2="299.8" y2="180" stroke="#9DB4E8" stroke-width="2.5" opacity="0.7"/><ellipse cx="166" cy="180" rx="20" ry="4" fill="#0F2A66"/><polyline points="166.1,161.5 160.0,150.0 158.0,112.1 158.7,72.1 160.5,20.1" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="160.5,20.1 155.3,49.6 180.7,40.4" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="160.5,20.1 160.8,12.1" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="161.1" cy="2.6" r="10.5" fill="#FFFFFF"/><polyline points="152.0,166.0 152.0,176.0" fill="none" stroke="#FF8A3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="164.0,166.0 164.0,176.0" fill="none" stroke="#FF8A3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="176.0,166.0 176.0,176.0" fill="none" stroke="#FF8A3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="202.0,170.0 202.0,153.0" fill="none" stroke="#FF8A3D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><polygon points="202.0,146.0 208.0,156.0 196.0,156.0" fill="#FF8A3D"/><polygon points="202.0,177.0 196.0,167.0 208.0,167.0" fill="#FF8A3D"/></svg></figure>
+  <div class="dose" data-dose='{&quot;1&quot;: [null, &quot;à partir du niveau 2&quot;], &quot;2&quot;: [&quot;20&quot;, &quot;sauts&quot;], &quot;3&quot;: [&quot;30&quot;, &quot;sauts&quot;]}'>
+    <p><strong class="dose-value"></strong> <span class="dose-detail"></span></p>
+    
+  </div>
+  <ol class="steps"><li>Debout, pieds écartés de la largeur des hanches, genoux presque tendus.</li><li>Petits sauts rapides sur place, sur l’avant du pied.</li><li>Contacts au sol très courts, les talons ne touchent pas.</li></ol>
+  <p class="avoid"><strong>À éviter.</strong> Plier les genoux pour sauter haut : tout vient des chevilles.</p>
+  <p class="variant"><strong>Plus facile :</strong> Montées rapides sur la pointe des pieds, sans décoller.<br><strong>Plus dur :</strong> Quelques sauts de plus.</p>
+  <a class="video" href="https://www.youtube.com/results?search_query=pogo+jumps+course+%C3%A0+pied" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 6.3 L13.8 10 L8.2 13.7 Z" fill="currentColor"/></svg>Voir des démos vidéo</a>
+</article>
+  </section>
+</main>
+
+<footer>
+  <h2>Les règles</h2>
+  <ul>
+    <li>Semaines allégées (semaines 8, 12 et 15) : un seul tour.</li>
+    <li>Plus de renfo jambes après le 23 février, plus rien la semaine de la course.</li>
+    <li>Une douleur dans une articulation ou un tendon : arrête l’exercice. Une brûlure dans le muscle, c’est normal.</li>
+    <li>Les liens vidéo ouvrent une recherche YouTube : choisis une démo où la personne bouge lentement.</li>
+  </ul>
+</footer>
+
+<script>
+(() => {
+  const params = new URLSearchParams(location.search);
+  const today = new Date();
+  const levelByDate = today < new Date(2026, 11, 14) ? 1 : today < new Date(2027, 0, 18) ? 2 : 3;
+  const asked = Number(params.get('niveau'));
+  let level = [1, 2, 3].includes(asked) ? asked : levelByDate;
+
+  let audio;
+  let wakeLock;
+  const beep = (frequency, duration) => {
+    if (!audio) return;
+    const oscillator = audio.createOscillator();
+    const gain = audio.createGain();
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(0.25, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + duration);
+    oscillator.connect(gain).connect(audio.destination);
+    oscillator.start();
+    oscillator.stop(audio.currentTime + duration);
+  };
+
+  const resetTimer = (button) => {
+    clearInterval(button.interval);
+    button.classList.remove('running');
+    button.style.setProperty('--progress', 0);
+    button.setAttribute('aria-label', 'Lancer le chrono');
+    button.querySelector('.timer-label').textContent = 'Lancer le chrono';
+    if (wakeLock) { wakeLock.release().catch(() => {}); wakeLock = null; }
+  };
+
+  const startTimer = async (button) => {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    if (audio.state === 'suspended') audio.resume();
+    try { wakeLock = await navigator.wakeLock?.request('screen'); } catch (error) { wakeLock = null; }
+    const hold = JSON.parse(button.dataset.seconds)[level];
+    const setup = 5;
+    const startedAt = Date.now();
+    const label = button.querySelector('.timer-label');
+    let lastSecond = null;
+    button.classList.add('running');
+    button.setAttribute('aria-label', 'Arrêter le chrono');
+    const tick = () => {
+      const elapsed = (Date.now() - startedAt) / 1000;
+      if (elapsed < setup) {
+        label.textContent = `En place… ${Math.ceil(setup - elapsed)}`;
+        return;
+      }
+      const left = hold - (elapsed - setup);
+      if (left <= 0) {
+        clearInterval(button.interval);
+        beep(880, 0.5);
+        navigator.vibrate?.([200, 100, 200]);
+        label.textContent = 'Terminé';
+        button.style.setProperty('--progress', 1);
+        setTimeout(() => resetTimer(button), 2500);
+        return;
+      }
+      const second = Math.ceil(left);
+      if (second !== lastSecond) {
+        if (lastSecond === null) beep(660, 0.15);
+        else if (second <= 3) beep(520, 0.08);
+        lastSecond = second;
+      }
+      label.textContent = `${second} s`;
+      button.style.setProperty('--progress', 1 - left / hold);
+    };
+    tick();
+    button.interval = setInterval(tick, 200);
+  };
+
+  const render = () => {
+    document.querySelectorAll('.picker button').forEach((button) => {
+      button.setAttribute('aria-pressed', String(Number(button.dataset.level) === level));
+    });
+    document.querySelectorAll('.dose').forEach((dose) => {
+      const [value, detail] = JSON.parse(dose.dataset.dose)[level];
+      dose.querySelector('.dose-value').textContent = value ?? 'Pas encore';
+      dose.querySelector('.dose-detail').textContent = detail;
+      dose.closest('.lane').classList.toggle('not-yet', value === null);
+    });
+    document.querySelectorAll('[data-total]').forEach((total) => {
+      total.textContent = total.dataset.total.split('|')[level - 1];
+    });
+    document.querySelectorAll('.timer').forEach((button) => {
+      if (!button.classList.contains('running')) resetTimer(button);
+    });
+  };
+
+  document.querySelectorAll('.picker button').forEach((button) => {
+    button.addEventListener('click', () => {
+      level = Number(button.dataset.level);
+      const url = new URL(location.href);
+      url.searchParams.set('niveau', level);
+      history.replaceState(null, '', url);
+      render();
+    });
+  });
+
+  document.querySelectorAll('.timer').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (button.classList.contains('running')) resetTimer(button);
+      else startTimer(button);
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

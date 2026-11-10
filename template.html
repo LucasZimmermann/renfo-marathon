@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0F2A66">
+<title>Renfo marathon</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316337A'/%3E%3Cpath d='M12 44 L46 37' stroke='white' stroke-width='7' stroke-linecap='round'/%3E%3Ccircle cx='51' cy='33' r='6' fill='white'/%3E%3Cpath d='M44 37 L44 48' stroke='%23FF8A3D' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&display=swap">
+<style>
+:root {
+  --piste: #16337A;
+  --piste-deep: #0F2A66;
+  --paint: #FFFFFF;
+  --mist: #C5D3F2;
+  --signal: #FF8A3D;
+  --navy: #10255A;
+  --lane-line: rgba(255, 255, 255, 0.72);
+  --display: "Big Shoulders Display", "Big Shoulders", "Arial Narrow", sans-serif;
+  --text: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 60px; }
+body { margin: 0; background: var(--piste); color: var(--paint); font: 400 17px/1.55 var(--text); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; border-radius: 4px; }
+
+.hero { max-width: 600px; margin: 0 auto; padding: 30px 20px 24px; }
+.hero h1 { font: 800 66px/0.88 var(--display); margin: 0 0 16px; }
+.lead { font-size: 18px; line-height: 1.45; margin: 0 0 20px; max-width: 32ch; }
+.levels { margin: 0; display: grid; gap: 4px; }
+.levels div { display: grid; grid-template-columns: 82px 1fr; align-items: baseline; }
+.levels dt { font: 700 22px/1.2 var(--display); }
+.levels dd { margin: 0; color: var(--mist); font-size: 15.5px; }
+.note { color: var(--mist); font-size: 15.5px; margin: 14px 0 0; }
+
+.bar { position: sticky; top: 0; z-index: 5; background: var(--piste-deep); border-bottom: 3px solid var(--lane-line); }
+.bar-inner { max-width: 600px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 12px; }
+.sections a { display: inline-block; font-weight: 700; font-size: 15.5px; text-decoration: none; padding: 13px 8px; }
+.picker { display: flex; align-items: center; gap: 2px; }
+.picker span { color: var(--mist); font-size: 14.5px; margin-right: 6px; }
+.picker button { font: 800 21px/1 var(--display); color: var(--paint); background: transparent; border: 0; width: 42px; height: 42px; border-radius: 8px; cursor: pointer; }
+.picker button[aria-pressed="true"] { background: rgba(255, 255, 255, 0.16); box-shadow: inset 0 -3px 0 var(--signal); }
+
+main { max-width: 600px; margin: 0 auto; }
+.section-head { padding: 30px 20px 20px; }
+.section-head h2 { font: 800 48px/1 var(--display); margin: 0 0 8px; }
+.section-head p { margin: 0; color: var(--mist); font-size: 16px; max-width: 40ch; }
+
+.lane { border-top: 3px solid var(--lane-line); padding: 20px 20px 28px; }
+.lane-head { display: grid; grid-template-columns: 50px 1fr; gap: 12px; align-items: start; }
+.lane-no { font: 800 78px/0.78 var(--display); }
+.lane h3 { font: 700 33px/1 var(--display); margin: 2px 0 6px; }
+.why { margin: 0; color: var(--mist); font-size: 15.5px; line-height: 1.45; }
+.pose { margin: 16px -10px 4px; }
+.pose svg { display: block; width: 100%; height: auto; max-height: 290px; }
+.dose { display: flex; align-items: center; justify-content: space-between; gap: 10px 14px; flex-wrap: wrap; margin: 6px 0 16px; }
+.dose p { margin: 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.dose-value { font: 800 48px/1 var(--display); }
+.dose-detail { color: var(--mist); font-size: 16px; }
+.timer { position: relative; overflow: hidden; min-width: 170px; height: 48px; padding: 0 18px; border: 0; border-radius: 10px; background: var(--signal); color: var(--navy); font: 700 16px/1 var(--text); cursor: pointer; }
+.timer::after { content: ""; position: absolute; left: 0; bottom: 0; height: 5px; width: calc(var(--progress, 0) * 100%); background: var(--navy); opacity: 0.45; }
+.timer.running { background: var(--paint); }
+.timer-label { position: relative; font-variant-numeric: tabular-nums; }
+.steps { list-style: none; margin: 0 0 14px; padding: 0; counter-reset: step; }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 24px 1fr; gap: 8px; margin: 0 0 9px; }
+.steps li::before { content: counter(step); font: 800 23px/1.1 var(--display); color: var(--signal); }
+.avoid, .variant { margin: 0 0 12px; font-size: 16px; }
+.video { display: inline-flex; align-items: center; gap: 8px; color: var(--mist); font-size: 16px; padding: 8px 0; text-underline-offset: 3px; }
+.video svg { flex: none; }
+.lane.not-yet .pose, .lane.not-yet .steps, .lane.not-yet .avoid, .lane.not-yet .variant { opacity: 0.45; }
+.lane.not-yet .dose-value { font-size: 30px; }
+
+footer { max-width: 600px; margin: 0 auto; border-top: 3px solid var(--lane-line); padding: 26px 20px 48px; }
+footer h2 { font: 800 34px/1 var(--display); margin: 0 0 12px; }
+footer ul { margin: 0; padding-left: 20px; color: var(--mist); }
+footer li { margin: 0 0 8px; }
+
+@media (min-width: 640px) {
+  .hero h1 { font-size: 84px; }
+  .pose { margin-left: 0; margin-right: 0; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Renfo marathon</h1>
+  <p class="lead">Les 9 exercices de ta prépa : à quoi ils ressemblent, comment les faire et combien en faire à ton niveau.</p>
+  <dl class="levels">
+    <div><dt>Niveau 1</dt><dd>jusqu’au 13 décembre</dd></div>
+    <div><dt>Niveau 2</dt><dd>du 14 décembre au 17 janvier</dd></div>
+    <div><dt>Niveau 3</dt><dd>à partir du 18 janvier</dd></div>
+  </dl>
+  <p class="note">Le niveau du jour est déjà choisi, tu peux le changer dans la barre ci-dessous.</p>
+</header>
+
+<nav class="bar" aria-label="Sections et niveau">
+  <div class="bar-inner">
+    <div class="sections"><a href="#gainage">Gainage</a><a href="#jambes">Jambes</a></div>
+    <div class="picker" role="group" aria-label="Niveau">
+      <span aria-hidden="true">Niveau</span>
+      <button type="button" data-level="1" aria-pressed="false" aria-label="Niveau 1">1</button>
+      <button type="button" data-level="2" aria-pressed="false" aria-label="Niveau 2">2</button>
+      <button type="button" data-level="3" aria-pressed="false" aria-label="Niveau 3">3</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section id="gainage" aria-labelledby="gainage-title">
+    <div class="section-head">
+      <h2 id="gainage-title">Gainage</h2>
+      <p>Le jeudi, après le footing ou le soir. Enchaîne les 5 exercices, 15 s de pause entre chacun, puis refais un tour : <span data-total="≈ 8 min|≈ 11 min|≈ 13 min">≈ 11 min</span> en tout.</p>
+    </div>
+    %%GAINAGE%%
+  </section>
+
+  <section id="jambes" aria-labelledby="jambes-title">
+    <div class="section-head">
+      <h2 id="jambes-title">Jambes</h2>
+      <p>Le mardi, après la séance. Une chaise, une marche et tes haltères quand le niveau le demande. 30 s de pause entre les exercices, 2 tours : <span data-total="≈ 12 min|≈ 15 min|≈ 15 min">≈ 15 min</span> en tout.</p>
+    </div>
+    %%JAMBES%%
+  </section>
+</main>
+
+<footer>
+  <h2>Les règles</h2>
+  <ul>
+    <li>Semaines allégées (semaines 8, 12 et 15) : un seul tour.</li>
+    <li>Plus de renfo jambes après le 23 février, plus rien la semaine de la course.</li>
+    <li>Une douleur dans une articulation ou un tendon : arrête l’exercice. Une brûlure dans le muscle, c’est normal.</li>
+    <li>Les liens vidéo ouvrent une recherche YouTube : choisis une démo où la personne bouge lentement.</li>
+  </ul>
+</footer>
+
+<script>
+(() => {
+  const params = new URLSearchParams(location.search);
+  const today = new Date();
+  const levelByDate = today < new Date(2026, 11, 14) ? 1 : today < new Date(2027, 0, 18) ? 2 : 3;
+  const asked = Number(params.get('niveau'));
+  let level = [1, 2, 3].includes(asked) ? asked : levelByDate;
+
+  let audio;
+  let wakeLock;
+  const beep = (frequency, duration) => {
+    if (!audio) return;
+    const oscillator = audio.createOscillator();
+    const gain = audio.createGain();
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(0.25, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + duration);
+    oscillator.connect(gain).connect(audio.destination);
+    oscillator.start();
+    oscillator.stop(audio.currentTime + duration);
+  };
+
+  const resetTimer = (button) => {
+    clearInterval(button.interval);
+    button.classList.remove('running');
+    button.style.setProperty('--progress', 0);
+    button.setAttribute('aria-label', 'Lancer le chrono');
+    button.querySelector('.timer-label').textContent = 'Lancer le chrono';
+    if (wakeLock) { wakeLock.release().catch(() => {}); wakeLock = null; }
+  };
+
+  const startTimer = async (button) => {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    if (audio.state === 'suspended') audio.resume();
+    try { wakeLock = await navigator.wakeLock?.request('screen'); } catch (error) { wakeLock = null; }
+    const hold = JSON.parse(button.dataset.seconds)[level];
+    const setup = 5;
+    const startedAt = Date.now();
+    const label = button.querySelector('.timer-label');
+    let lastSecond = null;
+    button.classList.add('running');
+    button.setAttribute('aria-label', 'Arrêter le chrono');
+    const tick = () => {
+      const elapsed = (Date.now() - startedAt) / 1000;
+      if (elapsed < setup) {
+        label.textContent = `En place… ${Math.ceil(setup - elapsed)}`;
+        return;
+      }
+      const left = hold - (elapsed - setup);
+      if (left <= 0) {
+        clearInterval(button.interval);
+        beep(880, 0.5);
+        navigator.vibrate?.([200, 100, 200]);
+        label.textContent = 'Terminé';
+        button.style.setProperty('--progress', 1);
+        setTimeout(() => resetTimer(button), 2500);
+        return;
+      }
+      const second = Math.ceil(left);
+      if (second !== lastSecond) {
+        if (lastSecond === null) beep(660, 0.15);
+        else if (second <= 3) beep(520, 0.08);
+        lastSecond = second;
+      }
+      label.textContent = `${second} s`;
+      button.style.setProperty('--progress', 1 - left / hold);
+    };
+    tick();
+    button.interval = setInterval(tick, 200);
+  };
+
+  const render = () => {
+    document.querySelectorAll('.picker button').forEach((button) => {
+      button.setAttribute('aria-pressed', String(Number(button.dataset.level) === level));
+    });
+    document.querySelectorAll('.dose').forEach((dose) => {
+      const [value, detail] = JSON.parse(dose.dataset.dose)[level];
+      dose.querySelector('.dose-value').textContent = value ?? 'Pas encore';
+      dose.querySelector('.dose-detail').textContent = detail;
+      dose.closest('.lane').classList.toggle('not-yet', value === null);
+    });
+    document.querySelectorAll('[data-total]').forEach((total) => {
+      total.textContent = total.dataset.total.split('|')[level - 1];
+    });
+    document.querySelectorAll('.timer').forEach((button) => {
+      if (!button.classList.contains('running')) resetTimer(button);
+    });
+  };
+
+  document.querySelectorAll('.picker button').forEach((button) => {
+    button.addEventListener('click', () => {
+      level = Number(button.dataset.level);
+      const url = new URL(location.href);
+      url.searchParams.set('niveau', level);
+      history.replaceState(null, '', url);
+      render();
+    });
+  });
+
+  document.querySelectorAll('.timer').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (button.classList.contains('running')) resetTimer(button);
+      else startTimer(button);
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
